@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View,SafeAreaView, Text, Button, ScrollView, RefreshControl, StyleSheet } from "react-native";
 import { AuthContext } from "../../routes/index";
 import Post from "../../components/post";
+import StandartButton from "../../components/button";
 
 function HomeScreen() {
   const { signOut } = React.useContext(AuthContext);
@@ -74,9 +75,15 @@ function HomeScreen() {
     setRefreshing(false);
   };
 
+  const sendPost = () => {
+    // Simulated API call to send post
+    alert("Post sent!");
+  };
+
   return (
     <SafeAreaView
      style={styles.container}>
+      {/* <StandartButton text="Send Post" textStyle={styles.sendPostText} onClick={sendPost} /> */}
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.contentContainer}
@@ -118,6 +125,12 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingVertical: 10,
   },
+  sendPostText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#000",
+    height: 20,
+    }
 });
 
 export default HomeScreen;

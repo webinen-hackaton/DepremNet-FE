@@ -2,7 +2,7 @@ import { TouchableOpacity, StyleSheet, Text, View, Image, ImageBackground } from
 import { Linking } from 'react-native';
 import React from 'react';
 
-const Post = ({ username = "", profileImage="", imageLink = "", passTimeText = "", postText = "", emergencyLevel = 1, status = "rescued", locationLink = "" }) => {
+const Post = ({ username = "", profileImage="", imageLink = "", passTimeText = "", postText = "", status = "rescued", locationLink = "" }) => {
   const urgencyColors = ["#00FF00", "#33FF00", "#66FF00", "#99FF00", "#CCFF00", "#FFFF00", "#FFCC00", "#FF9900", "#FF6600", "#FF3300", "#FF0000"];
   
   const getStatusColor = (status) => {
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     padding: 10,
-    marginVertical: 20,
+    marginVertical: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
     dropShadowColor: "#000",

@@ -19,6 +19,7 @@ import { useNavigation } from "@react-navigation/native";
 function SignInScreen() {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
+
   const { navigate } = useNavigation();
 
   const { signIn } = React.useContext(AuthContext);
@@ -183,7 +184,9 @@ function SignInScreen() {
               />
             </View>
 
-            <Touchable text="Üye Ol" />
+            <View style={{ width: "100%", alignItems: "center" }}>
+              <Touchable text="Üye Ol" />
+            </View>
             <TouchableOpacity
               onPress={() => {
                 navigate("SignIn");

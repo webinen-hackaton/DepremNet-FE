@@ -5,6 +5,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "../pages/home";
 import SplashScreen from "../pages/splash";
 import SignInScreen from "../pages/login";
+import SignUpScreen from "../pages/signUp";
+
 export const AuthContext = React.createContext(null);
 
 const Stack = createNativeStackNavigator();
@@ -88,21 +90,32 @@ export default function App({ navigation }) {
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
           {state.isLoading ? (
             // We haven't finished checking for the token yet
             <Stack.Screen name="Splash" component={SplashScreen} />
           ) : state.userToken == null ? (
             // No token found, user isn't signed in
-            <Stack.Screen
-              name="SignIn"
-              component={SignInScreen}
-              options={{
-                title: "Sign in",
-                // When logging out, a pop animation feels intuitive
-                animationTypeForReplace: state.isSignout ? "pop" : "push",
-              }}
-            />
+            <>
+              <Stack.Screen
+                name="SignIn"
+                component={SignInScreen}
+                options={{
+                  title: "Sign in",
+                  // When logging out, a pop animation feels intuitive
+                  animationTypeForReplace: state.isSignout ? "pop" : "push",
+                }}
+              />
+              <Stack.Screen
+                name="SignUp"
+                component={SignUpScreen}
+                options={{
+                  title: "Sign in",
+                  // When logging out, a pop animation feels intuitive
+                  animationTypeForReplace: state.isSignout ? "pop" : "push",
+                }}
+              />
+            </>
           ) : (
             // User is signed in
             <Stack.Screen name="Home" component={HomeScreen} />

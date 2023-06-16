@@ -15,14 +15,48 @@ import Touchable from "../../components/button";
 import Input from "../../components/inputWithIcon";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
+import { register } from "../../api";
 
 function SignInScreen() {
-  const [username, setUsername] = React.useState("");
+  const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [passwordAgain, setPasswordAgain] = React.useState("");
+  const [name, setName] = React.useState("");
+  const [surname, setSurname] = React.useState("");
+  const [phone, setPhone] = React.useState("");
+  const [tckn, setTckn] = React.useState("");
 
+  const [error, setError] = React.useState(false);
   const { navigate } = useNavigation();
 
   const { signIn } = React.useContext(AuthContext);
+
+  const handleSignUp = () => {
+    setError(false);
+    if (password !== passwordAgain) {
+      setError(true);
+      return;
+    }
+
+    register({
+      email,
+      password,
+      first_name: name,
+      last_name: surname,
+      phone_number: phone,
+      nationality_id: tckn,
+    })
+      .then((res) => {
+        console.log("res", res);
+        if (res) {
+          navigate("Home");
+        }
+      })
+      .catch((err) => {
+        setError(true);
+        console.log("err", err);
+      });
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -50,6 +84,7 @@ function SignInScreen() {
                 Email *
               </Text>
               <TextInput
+                onChangeText={(text) => setEmail(text)}
                 style={{
                   height: 40,
                   paddingHorizontal: 0,
@@ -67,6 +102,7 @@ function SignInScreen() {
                 Şifre *
               </Text>
               <TextInput
+                onChangeText={(text) => setPassword(text)}
                 placeholder="Şifrenizi giriniz"
                 secureTextEntry={true}
                 style={{
@@ -87,6 +123,7 @@ function SignInScreen() {
               <TextInput
                 placeholder="Şifrenizi Tekrar giriniz"
                 secureTextEntry={true}
+                onChangeText={(text) => setPasswordAgain(text)}
                 style={{
                   height: 40,
                   paddingHorizontal: 0,
@@ -117,6 +154,7 @@ function SignInScreen() {
                   İsim *
                 </Text>
                 <TextInput
+                  onChangeText={(text) => setName(text)}
                   placeholder="Isim giriniz"
                   style={{
                     height: 40,
@@ -136,6 +174,7 @@ function SignInScreen() {
                   Soyisim *
                 </Text>
                 <TextInput
+                  onChangeText={(text) => setSurname(text)}
                   placeholder="Soyisim giriniz"
                   style={{
                     height: 40,
@@ -154,6 +193,7 @@ function SignInScreen() {
                 Telefon Numarası *
               </Text>
               <TextInput
+                onChangeText={(text) => setPhone(text)}
                 placeholder="5444332211"
                 style={{
                   height: 40,
@@ -171,6 +211,7 @@ function SignInScreen() {
                 Tc Kimlik No *
               </Text>
               <TextInput
+                onChangeText={(text) => setTckn(text)}
                 placeholder="11234567890"
                 style={{
                   height: 40,
@@ -185,7 +226,7 @@ function SignInScreen() {
             </View>
 
             <View style={{ width: "100%", alignItems: "center" }}>
-              <Touchable text="Üye Ol" />
+              <Touchable onClick={handleSignUp} text="Üye Ol" />
             </View>
             <TouchableOpacity
               onPress={() => {

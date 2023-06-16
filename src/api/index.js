@@ -77,12 +77,13 @@ axios.interceptors.response.use(
 );
 
 const register = (req) =>
-  axios.post(BASE_URL + "/api/register/?format=json", req);
+  axios.post(BASE_URL + "/api/auth/register/?format=json", req);
 
-const login = (req) => axios.post(BASE_URL + "/api/login/?format=json", req);
+const login = (req) =>
+  axios.post(BASE_URL + "/api/auth/login/?format=json", req);
 
 const validatePhone = (req) =>
   axios.post(BASE_URL + "/consumers/verify-otp", req);
 const getProfile = () => axios.get(BASE_URL + "/consumers/profile");
 
-export { login, validatePhone, getProfile };
+export { login, validatePhone, getProfile, register };

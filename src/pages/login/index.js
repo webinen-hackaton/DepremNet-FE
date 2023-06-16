@@ -20,18 +20,25 @@ import { login } from "../../api";
 function SignInScreen() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [error, setError] = React.useState(false);
   const { navigate } = useNavigation();
   const { signIn } = React.useContext(AuthContext);
-
   const handleLogin = () => {
+    setError(false);
     login({
-      email: "a@a.com",
-      password: "12345",
+      email,
+      password,
+      // email: "a@a.com",
+      // password: "12345",
     })
       .then((res) => {
         console.log("res", res);
+        if (res) {
+          navigate("Home");
+        }
       })
       .catch((err) => {
+        setError(true);
         console.log("err", err);
       });
   };
@@ -66,7 +73,7 @@ function SignInScreen() {
                 Email *
               </Text>
               <TextInput
-                onChange={(e) => setEmail(e.target.value)}
+                onChangeText={(e) => setEmail(e)}
                 style={{
                   height: 40,
                   paddingHorizontal: 0,
@@ -84,7 +91,7 @@ function SignInScreen() {
                 Şifre *
               </Text>
               <TextInput
-                onChange={(e) => setPassword(e.target.value)}
+                onChangeText={(e) => setPassword(e)}
                 placeholder="Şifrenizi giriniz"
                 secureTextEntry={true}
                 style={{
@@ -99,7 +106,18 @@ function SignInScreen() {
               />
             </View>
 
-            <Touchable onClick={handleLogin} text="Giriş Yap" />
+            <View style={{ width: "100%", alignItems: "center" }}>
+              <Touchable onClick={handleLogin} text="Giriş Yap" />
+            </View>
+            {error && (
+              <View style={{ width: "100%", alignItems: "center", padding: 5 }}>
+                <Text
+                  style={{ fontWeight: "bold", fontSize: 16, color: "#f00" }}
+                >
+                  Hatali Şifre !
+                </Text>
+              </View>
+            )}
             <TouchableOpacity
               onPress={() => {
                 navigate("SignUp");

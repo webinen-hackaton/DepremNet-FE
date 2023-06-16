@@ -24,7 +24,7 @@ export default function ProfileScreen() {
           </TouchableOpacity>
         </View>
       </View>
-      <Post  username="Furkan Pınar" profileImage={profileImagePlaceholder} imageLink="https://pbs.twimg.com/media/FywG4J-XsAEw-p4?format=jpg" passTimeText="19 saat" postText="Beğendiğiniz alt coinleri yazar mısınız? Ekip olarak inceleyeceğiz." emergencyLevel={7} status="rescued" locationLink="https://goo.gl/maps/1D1Afb8gYLSqM4bL8" />
+      <Post  username="Furkan Pınar" profileImage={profileImagePlaceholder} imageLink="https://pbs.twimg.com/media/FywG4J-XsAEw-p4?format=jpg" passTimeText="19 saat" postText="Beğendiğiniz alt coinleri yazar mısınız? Ekip olarak inceleyeceğiz." status="rescued" locationLink="https://goo.gl/maps/1D1Afb8gYLSqM4bL8" />
     </View>
   );
 }
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerImage: {
-    height: 136,
+    height: 200,
   },
   profileContainer: {
     alignItems: "center",
@@ -64,8 +64,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 20,
-    marginTop: 10,
     marginTop: 30,
+    marginBottom: 20,
   },
   editProfileButton: {
     backgroundColor: "transparent",

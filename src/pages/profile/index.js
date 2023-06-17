@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -17,6 +17,7 @@ import { AuthContext } from "../../routes";
 import * as SecureStore from "expo-secure-store";
 import jwt_decode from "jwt-decode";
 import { getProfile } from "../../api";
+import * as Location from 'expo-location';
 
 export default ProfileScreen = () => {
   const { navigate } = useNavigation();
@@ -31,6 +32,10 @@ export default ProfileScreen = () => {
     "https://app.uizard.io/placeholders/avatars/avatar-4.png";
   const { signOut } = React.useContext(AuthContext);
   const emergencyCall = () => {
+    setAmISafe(!amISafe);
+    if(!amISafe){
+      return;
+    }
     Alert.alert(
       "Acil durum talebiniz ekiplere iletilmiştir.",
       "Ekiplerin size daha kolay ulaşması için konum bilginizi güncellemek ister misiniz?",
@@ -40,7 +45,7 @@ export default ProfileScreen = () => {
           onPress: () => console.log("Cancel Pressed"),
           style: "cancel",
         },
-        { text: "Evet", onPress: () => console.log("OK Pressed") },
+        { text: "Evet", onPress: () => updateLocation() }
       ],
       { cancelable: false }
     );
@@ -67,6 +72,16 @@ export default ProfileScreen = () => {
 
     return () => {};
   }, []);
+  const updateLocation = async () => {
+    try {
+      await Location.requestForegroundPermissionsAsync();
+      const location = await Location.getCurrentPositionAsync();
+      console.log(location);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
 
   return (
     <View style={styles.container}>
@@ -80,17 +95,26 @@ export default ProfileScreen = () => {
           <Text style={styles.userNameText}>Furkan Pınar</Text>
           <Text style={styles.nicknameText}>@rsazotype</Text>
           <View style={styles.buttonContainer}>
+
+          {amISafe ?
             <TouchableOpacity
-              style={[
-                styles.helpButton,
-                { backgroundColor: amISafe ? "transparent" : "#ff0000" },
-              ]}
+              style={styles.helpButton}
+              onPress={() => {
+                emergencyCall()
+              }}
+            >
+              <Image style={styles.helpIcon} source={helpIcon} />
+            </TouchableOpacity>:
+            <TouchableOpacity
+              style={styles.helpButton2}
               onPress={() => {
                 emergencyCall();
               }}
             >
               <Image style={styles.helpIcon2} source={helpIcon} />
             </TouchableOpacity>
+          }
+
             <StandartButton
               text="Profilimi Düzenle"
               buttonStyle={styles.editProfileButton}
@@ -188,6 +212,7 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     tintColor: "#000",
+    height: 20
   },
   editprofileStyle: {
     fontSize: 16,
@@ -200,6 +225,15 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: "100%",
     borderColor: "#000",
+    padding: 6,
+    width: 35,
+    marginHorizontal: 2,
+  },
+  helpButton2: {
+    backgroundColor: "red",
+    borderWidth: 2,
+    borderRadius: "100%",
+    borderColor: "#000",  
     padding: 6,
     width: 35,
     marginHorizontal: 2,

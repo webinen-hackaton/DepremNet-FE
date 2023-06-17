@@ -15,6 +15,7 @@ import AddTeam from "../pages/Admin/AddTeam";
 import MyTeams from "../pages/Admin/MyTeams";
 import EditProfile from "../pages/EditProfile";
 import * as SecureStore from "expo-secure-store";
+import GoogleMapsPage from "../pages/Admin/MapPage";
 
 export const AuthContext = React.createContext(null);
 
@@ -26,7 +27,7 @@ const HomeStack = () => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen
         name="Home"
-        component={HomeScreen}
+        component={GoogleMapsPage}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

@@ -8,15 +8,19 @@ import {
   SafeAreaView,
   Image,
   Platform,
-  Alert
+  Alert,
+  TouchableWithoutFeedback,
+  Keyboard
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as MediaLibrary from "expo-media-library";
 import Constants from "expo-constants";
 import { Ionicons } from "@expo/vector-icons";
 import { Camera } from "expo-camera";
+import { useNavigation } from "@react-navigation/native";
 
 export default function AddPost() {
+  const { navigate } = useNavigation();
   const [text, setText] = useState("");
   const [image, setImage] = useState(null);
   const [cameraPermission, setCameraPermission] = useState(null);
@@ -29,7 +33,7 @@ export default function AddPost() {
   }, []);
 
   const getPermissionsAsync = async () => {
-    const { status: cameraStatus } = await Camera.requestMicrophonePermissionsAsync();
+    const { status: cameraStatus } = await Camera.requestCameraPermissionsAsync();
     const { status: mediaLibraryStatus } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (cameraStatus === "granted" && mediaLibraryStatus === "granted") {
       setCameraPermission(true);
@@ -74,7 +78,7 @@ export default function AddPost() {
   };
 
   const openCamera = async () => {
-    let permissionResult = await Camera.requestMicrophonePermissionsAsync();
+    let permissionResult = await Camera.requestCameraPermissionsAsync();
     if (permissionResult.granted === false) {
       Alert.alert("İzin reddedildi", "Kamera kullanmak için izin gerekiyor!");
       return;
@@ -122,9 +126,11 @@ export default function AddPost() {
 
   return (
     <SafeAreaView style={styles.container}>
+       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View>
       <View style={styles.header}>
         <TouchableOpacity onPress={handleCancel}>
-          <Text style={styles.headerButton}>İptal et</Text>
+          <Text style={styles.headerButton} onPress={()=>{navigate("Home")}}>İptal et</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={handleShare} disabled={!text && !image}>
           <Text style={[styles.headerButton2, !text && !image && { opacity: 1 }]}>
@@ -157,7 +163,8 @@ export default function AddPost() {
       {image && (
         <Image source={{ uri: image }} style={styles.imagePreview} />
       )}
-    </View>
+    </View></View>
+    </TouchableWithoutFeedback>
     </SafeAreaView>
   );
 }

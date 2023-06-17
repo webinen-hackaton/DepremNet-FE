@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -13,14 +13,39 @@ import Post from "../../components/post";
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../../routes";
 import * as SecureStore from "expo-secure-store";
+import jwt_decode from "jwt-decode";
+import { getProfile } from "../../api";
 
 export default ProfileScreen = () => {
   const { navigate } = useNavigation();
+  const [data, setData] = useState(null);
   const headerImage =
     "https://assets.api.uizard.io/api/cdn/stream/7c1ed95c-35bf-47d5-9257-f0f74117b9dd.png%22";
   const profileImagePlaceholder =
     "https://app.uizard.io/placeholders/avatars/avatar-4.png";
   const { signOut } = React.useContext(AuthContext);
+
+  handleProfile = async () => {
+    const token = await SecureStore.getItemAsync("userToken");
+    const decoded = jwt_decode(token);
+
+    getProfile(decoded.id)
+      .then((res) => {
+        console.log("res", res);
+        setData(res.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+
+    console.log(decoded);
+  };
+
+  useEffect(() => {
+    handleProfile();
+
+    return () => {};
+  }, []);
 
   return (
     <View style={styles.container}>

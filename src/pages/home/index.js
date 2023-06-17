@@ -1,13 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { View,SafeAreaView, Text, Button, ScrollView, RefreshControl, StyleSheet } from "react-native";
-import { AuthContext } from "../../routes/index";
 import Post from "../../components/post";
-import StandartButton from "../../components/button";
 
 function HomeScreen() {
-  const { signOut } = React.useContext(AuthContext);
-  const username = "Furkan Pınar";
-  const profileImage = "https://app.uizard.io/placeholders/avatars/avatar-4.png";
   const [posts, setPosts] = useState([{
     imageLink: "https://pbs.twimg.com/media/FywG4J-XsAEw-p4?format=jpg",
     passTimeText: "19 saat",

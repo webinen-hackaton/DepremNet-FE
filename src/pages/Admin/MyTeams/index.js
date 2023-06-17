@@ -2,13 +2,15 @@ import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Avatar } from "react-native-elements";
+import { useNavigation } from "@react-navigation/native";
 
 export default MyTeamsPage = () => {
+    const {navigate} = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Takımlarım</Text>
-        <TouchableOpacity style={styles.addButton}>
+        <TouchableOpacity style={styles.addButton} onPress={()=>{navigate("addTeam")}}>
           <Ionicons name="add" size={24} color="black" />
         </TouchableOpacity>
       </View>
@@ -47,7 +49,7 @@ export default MyTeamsPage = () => {
               containerStyle={styles.avatar}
             />
           </View>
-          <TouchableOpacity style={styles.editButton}>
+          <TouchableOpacity style={styles.editButton} onPress={()=>{navigate("editTeam")}}>
             <Ionicons name="create" size={18} color="black" />
           </TouchableOpacity>
         </View>
@@ -90,7 +92,7 @@ export default MyTeamsPage = () => {
               containerStyle={styles.avatar}
             />
           </View>
-          <TouchableOpacity style={styles.editButton}>
+          <TouchableOpacity style={styles.editButton} onPress={()=>{navigate("editTeam")}}>
             <Ionicons name="create" size={18} color="black" />
           </TouchableOpacity>
         </View>
@@ -120,7 +122,7 @@ export default MyTeamsPage = () => {
             />
 
           </View>
-          <TouchableOpacity style={styles.editButton}>
+          <TouchableOpacity style={styles.editButton} onPress={()=>{navigate("editTeam")}}>
             <Ionicons name="create" size={18} color="black" />
           </TouchableOpacity>
         </View>
@@ -133,8 +135,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    marginTop: 48,
-    backgroundColor: "#f8f8f8",
+    marginTop: 48
   },
   header: {
     flexDirection: "row",

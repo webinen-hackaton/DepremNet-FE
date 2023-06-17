@@ -1,12 +1,12 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
-import { AuthContext } from "../../routes/index";
 import StandartButton from "../../components/button";
 import helpIcon from "../../../assets/help.png";
 import Post from "../../components/post";
+import { useNavigation } from "@react-navigation/native";
 
-export default function ProfileScreen() {
-  const { signOut } = React.useContext(AuthContext);
+export default ProfileScreen = () => {
+  const { navigate } = useNavigation();
   const headerImage = "https://assets.api.uizard.io/api/cdn/stream/7c1ed95c-35bf-47d5-9257-f0f74117b9dd.png%22";
   const profileImagePlaceholder = "https://app.uizard.io/placeholders/avatars/avatar-4.png";
 
@@ -19,7 +19,7 @@ export default function ProfileScreen() {
         <Text style={styles.userNameText}>Furkan Pınar</Text>
         <Text style={styles.nicknameText}>@razotype</Text>
         <View style={styles.buttonContainer}>
-          <StandartButton text="Profilimi Düzenle" buttonStyle={styles.editProfileButton} textStyle={styles.editprofileStyle} />
+          <StandartButton text="Profilimi Düzenle" buttonStyle={styles.editProfileButton} textStyle={styles.editprofileStyle} onClick={()=>{navigate("editProfile")}} />
           <TouchableOpacity style={styles.helpButton}>
             <Image style={styles.helpIcon} source={helpIcon} />
           </TouchableOpacity>

@@ -21,6 +21,10 @@ const Post = ({ username = "", profileImage="", imageLink = "", passTimeText = "
     }
   };
 
+  const handleRescue = () => {
+    alert("Kurtarıldı");
+  };
+
 
   return (
     <View style={styles.container}>

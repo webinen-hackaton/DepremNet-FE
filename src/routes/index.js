@@ -10,6 +10,10 @@ import SignInScreen from "../pages/login";
 import SignUpScreen from "../pages/signUp";
 import ProfileScreen from "../pages/profile";
 import AddPost from "../pages/addPost";
+import EditTeam from "../pages/Admin/EditTeam";
+import AddTeam from "../pages/Admin/AddTeam";
+import MyTeams from "../pages/Admin/MyTeams";
+import EditProfile from "../pages/EditProfile";
 
 export const AuthContext = React.createContext(null);
 
@@ -19,7 +23,7 @@ const Stack = createNativeStackNavigator();
 const HomeStack = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }}/>
     </Stack.Navigator>
   );
 };
@@ -27,7 +31,7 @@ const HomeStack = () => {
 const CreatePostStack = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false,  }}>
-      <Stack.Screen name="CreatePost" component={AddPost} />
+      <Stack.Screen name="CreatePost" component={AddPost} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };
@@ -35,7 +39,18 @@ const CreatePostStack = () => {
 const ProfileStack = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false}}>
-      <Stack.Screen name="Profile" component={ProfileScreen} />
+      <Stack.Screen name="profilim" component={ProfileScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="editProfile" component={EditProfile} options={{ headerShown: false }} />
+    </Stack.Navigator>
+  );
+};
+
+const MyTeamsStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false, tabBarVisible:false }} >
+      <Stack.Screen name="MyTeams" component={MyTeams} options={{ headerShown: false }}/>
+      <Stack.Screen name="editTeam" component={EditTeam}  options={{ headerShown: false }}/>
+      <Stack.Screen name="addTeam" component={AddTeam} options={{ headerShown: false }}/>
     </Stack.Navigator>
   );
 };
@@ -152,16 +167,16 @@ export default function App({ navigation }) {
       return <Ionicons name={iconName} size={size} color={color} style={iconStyle} />;
     },
     tabBarLabel: () => null,
+    headerShown: false,
   })}
-  tabBarOptions={{
-    activeTintColor: "blue",
-    inactiveTintColor: "gray"
-  }}
+
 >
   <Tab.Screen name="Home" component={HomeStack} />
   <Tab.Screen name="Paylaş" component={CreatePostStack} />
   <Tab.Screen name="Profile" component={ProfileStack} />
+ <Stack.Screen name="myTeam" component={MyTeamsStack}/>
 </Tab.Navigator>
+
 
         )}
       </NavigationContainer>

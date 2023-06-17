@@ -29,7 +29,7 @@ export default function AddPost() {
   }, []);
 
   const getPermissionsAsync = async () => {
-    const { status: cameraStatus } = await Camera.requestPermissionsAsync();
+    const { status: cameraStatus } = await Camera.requestMicrophonePermissionsAsync();
     const { status: mediaLibraryStatus } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (cameraStatus === "granted" && mediaLibraryStatus === "granted") {
       setCameraPermission(true);
@@ -74,7 +74,7 @@ export default function AddPost() {
   };
 
   const openCamera = async () => {
-    let permissionResult = await Camera.requestPermissionsAsync();
+    let permissionResult = await Camera.requestMicrophonePermissionsAsync();
     if (permissionResult.granted === false) {
       Alert.alert("İzin reddedildi", "Kamera kullanmak için izin gerekiyor!");
       return;

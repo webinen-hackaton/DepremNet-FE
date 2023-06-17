@@ -6,6 +6,7 @@ import HomeScreen from "../pages/home";
 import SplashScreen from "../pages/splash";
 import SignInScreen from "../pages/login";
 import SignUpScreen from "../pages/signUp";
+import MyTeams from "../pages/Admin/MyTeams";
 
 export const AuthContext = React.createContext(null);
 
@@ -99,7 +100,7 @@ export default function App({ navigation }) {
             <>
               <Stack.Screen
                 name="SignIn"
-                component={SignInScreen}
+                component={MyTeams}
                 options={{
                   title: "Sign in",
                   // When logging out, a pop animation feels intuitive

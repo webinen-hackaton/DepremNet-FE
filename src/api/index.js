@@ -29,12 +29,12 @@ axios.interceptors.request.use(
   async (config) => {
     // if (config.method !== "GET" && config.method !== "get") Keyboard.dismiss();
     // await AsyncStorage.removeItem('token')
-    // const token = store.getState().auth.token;
-    // if (token) {
-    //   config.headers.Authorization = token;
-    // } else {
-    //   config.headers.Authorization = "";
-    // }
+    const token = await SecureStore.getItemAsync("userToken");
+    if (token) {
+      config.headers.Authorization = token;
+    } else {
+      config.headers.Authorization = "";
+    }
     // console.log('token' + JSON.stringify(config.headers.Authorization))
 
     return config;

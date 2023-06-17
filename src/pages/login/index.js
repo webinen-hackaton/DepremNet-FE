@@ -18,28 +18,28 @@ import { useNavigation } from "@react-navigation/native";
 import { login } from "../../api";
 import * as SecureStore from "expo-secure-store";
 
-
-
 function SignInScreen() {
   const [email, setEmail] = React.useState("a@a1.com");
   const [password, setPassword] = React.useState("123456");
   const [error, setError] = React.useState(false);
   const { navigate } = useNavigation();
   const { signIn } = React.useContext(AuthContext);
-  const handleLogin = async() => {
+  const handleLogin = async () => {
     setError(false);
     login({
-      "email": email,
-      "password": password,
+      email: email,
+      password: password,
       // email: "a@a.com",
       // password: "12345",
     })
-      .then(async(res) => {
+      .then(async (res) => {
         console.log("res", res);
         if (res.data.access_token) {
-          await SecureStore.setItemAsync('token', res.data.access_token);
-          alert(await SecureStore.getItemAsync('token'));
-          navigate("Home");
+          await SecureStore.setItemAsync("userToken", res.data.access_token);
+          // alert(await SecureStore.getItemAsync("token"));
+          signIn(res.data.access_token);
+
+          // navigate("Home");
         }
       })
       .catch((err) => {
@@ -78,7 +78,7 @@ function SignInScreen() {
                 Email *
               </Text>
               <TextInput
-                onChangeText={(e) => setEmail(e)}
+                onChangeText={(e) => setEmail(e.toLowerCase())}
                 style={{
                   height: 40,
                   paddingHorizontal: 0,

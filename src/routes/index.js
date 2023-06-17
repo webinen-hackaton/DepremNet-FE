@@ -14,6 +14,7 @@ import EditTeam from "../pages/Admin/EditTeam";
 import AddTeam from "../pages/Admin/AddTeam";
 import MyTeams from "../pages/Admin/MyTeams";
 import EditProfile from "../pages/EditProfile";
+import * as SecureStore from "expo-secure-store";
 
 export const AuthContext = React.createContext(null);
 
@@ -23,34 +24,64 @@ const Stack = createNativeStackNavigator();
 const HomeStack = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }}/>
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };
 
 const CreatePostStack = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false,  }}>
-      <Stack.Screen name="CreatePost" component={AddPost} options={{ headerShown: false }} />
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen
+        name="CreatePost"
+        component={AddPost}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };
 
 const ProfileStack = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false}}>
-      <Stack.Screen name="profilim" component={ProfileScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="editProfile" component={EditProfile} options={{ headerShown: false }} />
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen
+        name="profilim"
+        component={ProfileScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="editProfile"
+        component={EditProfile}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };
 
 const MyTeamsStack = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false, tabBarVisible:false }} >
-      <Stack.Screen name="MyTeams" component={MyTeams} options={{ headerShown: false }}/>
-      <Stack.Screen name="editTeam" component={EditTeam}  options={{ headerShown: false }}/>
-      <Stack.Screen name="addTeam" component={AddTeam} options={{ headerShown: false }}/>
+    <Stack.Navigator
+      screenOptions={{ headerShown: false, tabBarVisible: false }}
+    >
+      <Stack.Screen
+        name="MyTeams"
+        component={MyTeams}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="editTeam"
+        component={EditTeam}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="addTeam"
+        component={AddTeam}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };
@@ -90,11 +121,14 @@ export default function App({ navigation }) {
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
       let userToken;
-
       try {
         // Restore token stored in `SecureStore` or any other encrypted storage
-        // userToken = await SecureStore.getItemAsync('userToken');
+        console.log("usertoken");
+        userToken = await SecureStore.getItemAsync("userToken");
+        console.log(userToken);
+        dispatch({ type: "RESTORE_TOKEN", token: userToken });
       } catch (e) {
+        console.err(e);
         // Restoring token failed
       }
 
@@ -102,7 +136,6 @@ export default function App({ navigation }) {
 
       // This will switch to the App screen or Auth screen and this loading
       // screen will be unmounted and thrown away.
-      dispatch({ type: "RESTORE_TOKEN", token: userToken });
     };
 
     bootstrapAsync();
@@ -116,7 +149,7 @@ export default function App({ navigation }) {
         // After getting token, we need to persist the token using `SecureStore` or any other encrypted storage
         // In the example, we'll use a dummy token
 
-        dispatch({ type: "SIGN_IN", token: "dummy-auth-token" });
+        dispatch({ type: "SIGN_IN", token: data });
       },
       signOut: () => dispatch({ type: "SIGN_OUT" }),
       signUp: async (data) => {
@@ -147,37 +180,51 @@ export default function App({ navigation }) {
           </Stack.Navigator>
         ) : (
           // User is signed in
-<Tab.Navigator
-  screenOptions={({ route }) => ({
-    tabBarIcon: ({ focused, color, size }) => {
-      let iconName;
-      let iconStyle = {};
-      size = 32;
+          <Tab.Navigator
+            screenOptions={({ route }) => ({
+              tabBarIcon: ({ focused, color, size }) => {
+                let iconName;
+                let iconStyle = {};
+                size = 32;
 
-      if (route.name === "Home") {
-        iconName = focused ? "home" : "home-outline";
-      } else if (route.name === "Paylaş") {
-        iconName = focused ? "add" : "add-outline";
-        iconStyle = { borderWidth: 2, borderColor:color, borderRadius: 21, paddingVertical: 2,paddingHorizontal:4 , paddingRight:1 ,marginTop: -48, backgroundColor: "white", overflow: "hidden", elevation: 10 };
-      } else if (route.name === "Profile") {
-        iconName = focused ? "person" : "person-outline";
-      }
-      
+                if (route.name === "Home") {
+                  iconName = focused ? "home" : "home-outline";
+                } else if (route.name === "Paylaş") {
+                  iconName = focused ? "add" : "add-outline";
+                  iconStyle = {
+                    borderWidth: 2,
+                    borderColor: color,
+                    borderRadius: 21,
+                    paddingVertical: 2,
+                    paddingHorizontal: 4,
+                    paddingRight: 1,
+                    marginTop: -48,
+                    backgroundColor: "white",
+                    overflow: "hidden",
+                    elevation: 10,
+                  };
+                } else if (route.name === "Profile") {
+                  iconName = focused ? "person" : "person-outline";
+                }
 
-      return <Ionicons name={iconName} size={size} color={color} style={iconStyle} />;
-    },
-    tabBarLabel: () => null,
-    headerShown: false,
-  })}
-
->
-  <Tab.Screen name="Home" component={HomeStack} />
-  <Tab.Screen name="Paylaş" component={CreatePostStack} />
-  <Tab.Screen name="Profile" component={ProfileStack} />
- {/* <Stack.Screen name="myTeam" component={MyTeamsStack}/> */}
-</Tab.Navigator>
-
-
+                return (
+                  <Ionicons
+                    name={iconName}
+                    size={size}
+                    color={color}
+                    style={iconStyle}
+                  />
+                );
+              },
+              tabBarLabel: () => null,
+              headerShown: false,
+            })}
+          >
+            <Tab.Screen name="Home" component={HomeStack} />
+            <Tab.Screen name="Paylaş" component={CreatePostStack} />
+            <Tab.Screen name="Profile" component={ProfileStack} />
+            <Stack.Screen name="myTeam" component={MyTeamsStack} />
+          </Tab.Navigator>
         )}
       </NavigationContainer>
     </AuthContext.Provider>

@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   selectedMemberItem: {
-    borderColor: "green",
+    backgroundColor: "lightgreen",
   },
   memberAvatar: {
     width: 100, // İstediğiniz boyutu belirleyebilirsiniz

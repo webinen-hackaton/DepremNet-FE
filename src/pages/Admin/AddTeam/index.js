@@ -101,15 +101,6 @@ export default AddTeam = () => {
           />
         </View>
 
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Takım Durumu:</Text>
-          <ModalDropdown
-            style={styles.input}
-            defaultValue="Seçiniz"
-            options={teamStatusOptions}
-            onSelect={(index, value) => setTeamStatus(value)}
-          />
-        </View>
 
         <View style={styles.memberContainer}>
           <Text style={styles.memberText}>Member ({selectedMembers.length}/5):</Text>
@@ -214,7 +205,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   selectedMemberItem: {
-    borderColor: "green",
+    backgroundColor: "lightgreen",
   },
   memberAvatar: {
     width: 100, // İstediğiniz boyutu belirleyebilirsiniz

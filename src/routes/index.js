@@ -174,7 +174,7 @@ export default function App({ navigation }) {
   <Tab.Screen name="Home" component={HomeStack} />
   <Tab.Screen name="Paylaş" component={CreatePostStack} />
   <Tab.Screen name="Profile" component={ProfileStack} />
- <Stack.Screen name="myTeam" component={MyTeamsStack}/>
+ {/* <Stack.Screen name="myTeam" component={MyTeamsStack}/> */}
 </Tab.Navigator>
 
 

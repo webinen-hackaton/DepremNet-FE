@@ -13,8 +13,6 @@ import {
   Keyboard
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import * as MediaLibrary from "expo-media-library";
-import Constants from "expo-constants";
 import { Ionicons } from "@expo/vector-icons";
 import { Camera } from "expo-camera";
 import { useNavigation } from "@react-navigation/native";
@@ -62,20 +60,6 @@ export default function AddPost() {
     }
   };
 
-  const handleTakePhoto = async () => {
-    if (cameraRef.current) {
-      let photo = await cameraRef.current.takePictureAsync({
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
-      });
-  
-      if (!photo.cancelled) {
-        let savedPhoto = await MediaLibrary.createAssetAsync(photo.uri);
-        setImage(savedPhoto.uri);
-      }
-    }
-  };
 
   const openCamera = async () => {
     let permissionResult = await Camera.requestCameraPermissionsAsync();

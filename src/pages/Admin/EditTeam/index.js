@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, TextInput, StyleSheet, Modal, FlatList, ScrollView, Button } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Avatar } from "react-native-elements";
-import ModalDropdown from "react-native-modal-dropdown";
+import { Picker } from "@react-native-picker/picker";
 import StandartButton from "../../../components/button";
 
 export default EditTeam = () => {
@@ -78,7 +78,7 @@ export default EditTeam = () => {
     );
   };
 
-  return (
+  return (<>
     <ScrollView>
       <View style={styles.container}>
         <Text style={styles.title}>Düzenle</Text>
@@ -93,26 +93,25 @@ export default EditTeam = () => {
 
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Takım Türü:</Text>
-          <ModalDropdown
+          <Picker
             style={styles.input}
-            defaultValue="Seçiniz"
-            options={teamTypeOptions}
-            onSelect={(index, value) => setTeamType(value)}
-          />
+            selectedValue={teamType}
+            onValueChange={(value) => setTeamType(value)}
+          >
+            <Picker.Item label="Seçiniz" value="" />
+            {teamTypeOptions.map((option) => (
+              <Picker.Item key={option} label={option} value={option} />
+            ))}
+          </Picker>
         </View>
 
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Takım Durumu:</Text>
-          <ModalDropdown
-            style={styles.input}
-            defaultValue="Seçiniz"
-            options={teamStatusOptions}
-            onSelect={(index, value) => setTeamStatus(value)}
-          />
+          
         </View>
 
         <View style={styles.memberContainer}>
-          <Text style={styles.memberText}>Member ({selectedMembers.length}/5):</Text>
+          <Text style={styles.memberText}>Üye ({selectedMembers.length}/5):</Text>
           <TouchableOpacity style={styles.addMemberButton} onPress={handleAddMember}>
             <Ionicons name="add" size={18} color="black" />
           </TouchableOpacity>
@@ -131,8 +130,9 @@ export default EditTeam = () => {
             </View>
           ))}
         </View>
-            <View style={styles.buttonContainer}>
-        <StandartButton text="Kaydet" onPress={() => {}}  />
+
+        <View style={styles.buttonContainer}>
+          <StandartButton text="Kaydet" onPress={() => {}}  />
         </View>
 
         <Modal visible={isMemberModalVisible} animationType="slide">
@@ -154,7 +154,18 @@ export default EditTeam = () => {
           </View>
         </Modal>
       </View>
+      
     </ScrollView>
+    <Picker
+    style={styles.input}
+    selectedValue={teamStatus}
+    onValueChange={(value) => setTeamStatus(value)}
+  >
+    <Picker.Item label="Seçiniz" value="" />
+    {teamStatusOptions.map((option) => (
+      <Picker.Item key={option} label={option} value={option} />
+    ))}
+  </Picker></>
   );
 }
 
@@ -206,37 +217,34 @@ const styles = StyleSheet.create({
   memberItem: {
     flexDirection: "column",
     alignItems: "center",
-    marginRight: 16,
+    width: "50%",
     marginBottom: 16,
-    borderWidth: 1,
-    borderColor: "gray",
-    borderRadius: 8,
-    padding: 8,
   },
   selectedMemberItem: {
-    backgroundColor: "lightgreen",
+    backgroundColor: "#e8e8e8",
   },
   memberAvatar: {
-    width: 100, // İstediğiniz boyutu belirleyebilirsiniz
-    height: 100, // İstediğiniz boyutu belirleyebilirsiniz
-    borderRadius: 50, // Yarım daire şeklinde olması için yarı çapa ayarlandı
+    width: 80,
+    height: 80,
+    marginBottom: 8,
   },
   memberName: {
-    marginTop: 8,
+    fontSize: 14,
     fontWeight: "bold",
-    textAlign: "center", // Yeni eklenen stil
-    maxWidth: 100, // İstediğiniz maksimum genişliği belirleyebilirsiniz
+    textAlign: "center",
   },
   memberRole: {
-    marginTop: 4,
+    fontSize: 12,
     color: "gray",
-    maxWidth: 100,
+    textAlign: "center",
+  },
+  buttonContainer: {
+    marginTop: 16,
   },
   modalContainer: {
     flex: 1,
-    padding: 16,
-    marginTop: 48,
-    backgroundColor: "#f8f8f8",
+    paddingTop: 48,
+    paddingHorizontal: 16,
   },
   modalTitle: {
     fontSize: 20,
@@ -246,21 +254,17 @@ const styles = StyleSheet.create({
   memberList: {
     flexGrow: 1,
     justifyContent: "center",
-    alignItems: "center", // Yeni eklenen stil
   },
   closeModalButton: {
     backgroundColor: "#e8e8e8",
-    padding: 16,
+    padding: 12,
     borderRadius: 8,
-    alignItems: "center",
+    alignSelf: "center",
+    marginTop: 16,
   },
   closeModalButtonText: {
     fontSize: 16,
     fontWeight: "bold",
+    textAlign: "center",
   },
-  buttonContainer: {
-    marginTop: 16,
-    width: "100%",
-    alignItems: "center",
-    },
 });

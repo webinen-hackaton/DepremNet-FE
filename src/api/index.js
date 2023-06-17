@@ -4,6 +4,7 @@ import { Keyboard, Platform } from "react-native";
 // import { store } from "../redux/store";
 import * as _ from "lodash";
 import { SERVER_URL } from "../config";
+import * as SecureStore from "expo-secure-store";
 
 // const hookStore = (which, error) => {
 //   const _paymentError = useSelector(paymentErrorStatus)

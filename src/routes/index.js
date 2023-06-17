@@ -1,16 +1,44 @@
 import * as React from "react";
 import { Button, Text, TextInput, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { Ionicons } from "@expo/vector-icons";
 import HomeScreen from "../pages/home";
 import SplashScreen from "../pages/splash";
 import SignInScreen from "../pages/login";
 import SignUpScreen from "../pages/signUp";
-import MyTeams from "../pages/Admin/MyTeams";
+import ProfileScreen from "../pages/profile";
+import AddPost from "../pages/addPost";
 
 export const AuthContext = React.createContext(null);
 
+const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
+
+const HomeStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Home" component={HomeScreen} />
+    </Stack.Navigator>
+  );
+};
+
+const CreatePostStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false,  }}>
+      <Stack.Screen name="CreatePost" component={AddPost} />
+    </Stack.Navigator>
+  );
+};
+
+const ProfileStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false}}>
+      <Stack.Screen name="Profile" component={ProfileScreen} />
+    </Stack.Navigator>
+  );
+};
 
 export default function App({ navigation }) {
   const [state, dispatch] = React.useReducer(
@@ -91,38 +119,51 @@ export default function App({ navigation }) {
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          {state.isLoading ? (
-            // We haven't finished checking for the token yet
+        {state.isLoading ? (
+          // We haven't finished checking for the token yet
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Splash" component={SplashScreen} />
-          ) : state.userToken == null ? (
-            // No token found, user isn't signed in
-            <>
-              <Stack.Screen
-                name="SignIn"
-                component={MyTeams}
-                options={{
-                  title: "Sign in",
-                  // When logging out, a pop animation feels intuitive
-                  animationTypeForReplace: state.isSignout ? "pop" : "push",
-                }}
-              />
-              <Stack.Screen
-                name="SignUp"
-                component={SignUpScreen}
-                options={{
-                  title: "Sign in",
-                  // When logging out, a pop animation feels intuitive
-                  animationTypeForReplace: state.isSignout ? "pop" : "push",
-                }}
-              />
-            </>
-          ) : (
-            // User is signed in
-            <Stack.Screen name="Home" component={HomeScreen} />
-          )}
-          <Stack.Screen name="Home" component={HomeScreen} />
-        </Stack.Navigator>
+          </Stack.Navigator>
+        ) : state.userToken != null ? (
+          // No token found, user isn't signed in
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="SignIn" component={SignInScreen} />
+            <Stack.Screen name="SignUp" component={SignUpScreen} />
+          </Stack.Navigator>
+        ) : (
+          // User is signed in
+<Tab.Navigator
+  screenOptions={({ route }) => ({
+    tabBarIcon: ({ focused, color, size }) => {
+      let iconName;
+      let iconStyle = {};
+      size = 32;
+
+      if (route.name === "Home") {
+        iconName = focused ? "home" : "home-outline";
+      } else if (route.name === "Paylaş") {
+        iconName = focused ? "add" : "add-outline";
+        iconStyle = { borderWidth: 2, borderColor:color, borderRadius: 21, paddingVertical: 2,paddingHorizontal:4 , paddingRight:1 ,marginTop: -48, backgroundColor: "white", overflow: "hidden", elevation: 10 };
+      } else if (route.name === "Profile") {
+        iconName = focused ? "person" : "person-outline";
+      }
+      
+
+      return <Ionicons name={iconName} size={size} color={color} style={iconStyle} />;
+    },
+    tabBarLabel: () => null,
+  })}
+  tabBarOptions={{
+    activeTintColor: "blue",
+    inactiveTintColor: "gray"
+  }}
+>
+  <Tab.Screen name="Home" component={HomeStack} />
+  <Tab.Screen name="Paylaş" component={CreatePostStack} />
+  <Tab.Screen name="Profile" component={ProfileStack} />
+</Tab.Navigator>
+
+        )}
       </NavigationContainer>
     </AuthContext.Provider>
   );

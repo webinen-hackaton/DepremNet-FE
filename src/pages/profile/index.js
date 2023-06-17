@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
 import { AuthContext } from "../../routes/index";
 import StandartButton from "../../components/button";
 import helpIcon from "../../../assets/help.png";
@@ -12,6 +12,7 @@ export default function ProfileScreen() {
 
   return (
     <View style={styles.container}>
+      <ScrollView>
       <Image style={styles.headerImage} source={{ uri: headerImage }} />
       <View style={styles.profileContainer}>
         <Image style={styles.profileImage} source={{ uri: profileImagePlaceholder }} />
@@ -24,7 +25,11 @@ export default function ProfileScreen() {
           </TouchableOpacity>
         </View>
       </View>
+      
       <Post  username="Furkan Pınar" profileImage={profileImagePlaceholder} imageLink="https://pbs.twimg.com/media/FywG4J-XsAEw-p4?format=jpg" passTimeText="19 saat" postText="Beğendiğiniz alt coinleri yazar mısınız? Ekip olarak inceleyeceğiz." status="rescued" locationLink="https://goo.gl/maps/1D1Afb8gYLSqM4bL8" />
+      <Post  username="Furkan Pınar" profileImage={profileImagePlaceholder} imageLink="https://pbs.twimg.com/media/FywG4J-XsAEw-p4?format=jpg" passTimeText="19 saat" postText="Beğendiğiniz alt coinleri yazar mısınız? Ekip olarak inceleyeceğiz." status="rescued" locationLink="https://goo.gl/maps/1D1Afb8gYLSqM4bL8" />
+
+      </ScrollView>
     </View>
   );
 }

@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { Avatar } from "react-native-elements";
 
 export default MyTeamsPage = () => {
   return (
@@ -15,18 +16,110 @@ export default MyTeamsPage = () => {
       <View style={styles.teamContainer}>
         <View style={styles.teamBox}>
           <Text style={styles.teamName}>Takım 1</Text>
+          <View style={styles.avatarContainer}>
+          
+            <Avatar
+              rounded
+              source={{
+                uri: "https://randomuser.me/api/portraits/women/1.jpg",
+              }}
+              containerStyle={styles.avatar}
+            />
+            <Avatar
+              rounded
+              source={{
+                uri: "https://randomuser.me/api/portraits/men/2.jpg",
+              }}
+              containerStyle={styles.avatar}
+            />
+            <Avatar
+              rounded
+              source={{
+                uri: "https://randomuser.me/api/portraits/women/2.jpg",
+              }}
+              containerStyle={styles.avatar}
+            />
+            <Avatar
+              rounded
+              source={{
+                uri: "https://randomuser.me/api/portraits/men/3.jpg",
+              }}
+              containerStyle={styles.avatar}
+            />
+          </View>
           <TouchableOpacity style={styles.editButton}>
             <Ionicons name="create" size={18} color="black" />
           </TouchableOpacity>
         </View>
         <View style={styles.teamBox}>
           <Text style={styles.teamName}>Takım 2</Text>
+          <View style={styles.avatarContainer}>
+            <Avatar
+              rounded
+              source={{
+                uri: "https://randomuser.me/api/portraits/men/4.jpg",
+              }}
+              containerStyle={styles.avatar}
+            />
+            <Avatar
+              rounded
+              source={{
+                uri: "https://randomuser.me/api/portraits/women/3.jpg",
+              }}
+              containerStyle={styles.avatar}
+            />
+            <Avatar
+              rounded
+              source={{
+                uri: "https://randomuser.me/api/portraits/men/5.jpg",
+              }}
+              containerStyle={styles.avatar}
+            />
+            <Avatar
+              rounded
+              source={{
+                uri: "https://randomuser.me/api/portraits/women/4.jpg",
+              }}
+              containerStyle={styles.avatar}
+            />
+            <Avatar
+              rounded
+              source={{
+                uri: "https://randomuser.me/api/portraits/men/6.jpg",
+              }}
+              containerStyle={styles.avatar}
+            />
+          </View>
           <TouchableOpacity style={styles.editButton}>
             <Ionicons name="create" size={18} color="black" />
           </TouchableOpacity>
         </View>
         <View style={styles.teamBox}>
           <Text style={styles.teamName}>Takım 3</Text>
+          <View style={styles.avatarContainer}>
+            <Avatar
+              rounded
+              source={{
+                uri: "https://randomuser.me/api/portraits/men/7.jpg",
+              }}
+              containerStyle={styles.avatar}
+            />
+            <Avatar
+              rounded
+              source={{
+                uri: "https://randomuser.me/api/portraits/women/5.jpg",
+              }}
+              containerStyle={styles.avatar}
+            />
+            <Avatar
+              rounded
+              source={{
+                uri: "https://randomuser.me/api/portraits/men/8.jpg",
+              }}
+              containerStyle={styles.avatar}
+            />
+
+          </View>
           <TouchableOpacity style={styles.editButton}>
             <Ionicons name="create" size={18} color="black" />
           </TouchableOpacity>
@@ -85,5 +178,13 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     justifyContent: "center",
     alignItems: "center",
+  },
+  avatarContainer: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
+  avatar: {
+    marginLeft: -16,
   },
 });

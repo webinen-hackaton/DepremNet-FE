@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-around"
   },
   imageContainer2: {
     borderRadius: 12,

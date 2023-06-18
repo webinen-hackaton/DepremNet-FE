@@ -88,6 +88,9 @@ const getProfile = (id) => axios.get(BASE_URL + `/api/user/${id}/?format=json`);
 const updateProfile = (id, req) =>
   axios.put(BASE_URL + `/api/user/${id}/?format=json`, req);
 
+const setLocation = (id, req) =>
+  axios.put(BASE_URL + `/api/user/${id}/?format=json`, req);
+
 
 const validatePhone = (req) =>
   axios.post(BASE_URL + "/consumers/verify-otp", req);

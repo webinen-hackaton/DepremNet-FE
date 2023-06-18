@@ -28,7 +28,7 @@ export default ProfileScreen = () => {
   const [amISafe, setAmISafe] = React.useState(true);
 
   const headerImage =
-    "https://assets.api.uizard.io/api/cdn/stream/7c1ed95c-35bf-47d5-9257-f0f74117b9dd.png%22";
+    "https://toursce.com/blog/wp-content/uploads/2019/01/Bursa.jpg";
   const profileImagePlaceholder =
     "https://app.uizard.io/placeholders/avatars/avatar-4.png";
   const { signOut } = React.useContext(AuthContext);
@@ -140,20 +140,20 @@ export default ProfileScreen = () => {
         </View>
 
         <Post
-          username="Furkan Pınar"
-          profileImage={profileImagePlaceholder}
-          imageLink="https://pbs.twimg.com/media/FywG4J-XsAEw-p4?format=jpg"
+          username={data?.first_name+ " " + data?.last_name}
+          profileImage={`https://i.pravatar.cc/150?img=${data?.id}`}
+          imageLink="https://static.euronews.com/articles/stories/07/38/88/82/1440x810_cmsv2_75962034-2ff3-59b2-922c-538693617480-7388882.jpg"
           passTimeText="19 saat"
-          postText="Beğendiğiniz alt coinleri yazar mısınız? Ekip olarak inceleyeceğiz."
+          postText="Uludağ üniversitesi mühendislik fakültesi m2 sınıfında mahsur kaldım kapılar açılmıyor."
           status="rescued"
           locationLink="https://goo.gl/maps/1D1Afb8gYLSqM4bL8"
         />
         <Post
-          username="Furkan Pınar"
-          profileImage={profileImagePlaceholder}
-          imageLink="https://pbs.twimg.com/media/FywG4J-XsAEw-p4?format=jpg"
-          passTimeText="19 saat"
-          postText="Beğendiğiniz alt coinleri yazar mısınız? Ekip olarak inceleyeceğiz."
+          username={data?.first_name+ " " + data?.last_name}
+          profileImage={`https://i.pravatar.cc/150?img=${data?.id}`}
+          imageLink="https://static.birgun.net/resim/haber-detay-resim/2023/04/03/afad-duyurdu-6-il-afet-bolgesi-ilan-edildi-1146221-5.jpg"
+          passTimeText="23 saat"
+          postText="Nilüfer yakınlarında acil yemeğe ihtiyacım var."
           status="rescued"
           locationLink="https://goo.gl/maps/1D1Afb8gYLSqM4bL8"
         />

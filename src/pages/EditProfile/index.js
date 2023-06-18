@@ -7,6 +7,7 @@ import jwt_decode from "jwt-decode";
 import { getProfile, updateProfile } from "../../api";
 
 
+
 export default function EditProfile() {
   const { navigate } = useNavigation();
   const [username, setUsername] = useState("");
@@ -91,7 +92,7 @@ export default function EditProfile() {
             <Text style={styles.profileImageText}>Resim Seç</Text>
           )}
         </TouchableOpacity>
-        <Text style={styles.userNameText}>@razotype</Text>
+        {/* <Text style={styles.userNameText}>@razotype</Text> */}
       </View>
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Adınız</Text>

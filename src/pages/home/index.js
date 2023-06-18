@@ -9,6 +9,7 @@ import {
   StyleSheet,
 } from "react-native";
 import Post from "../../components/post";
+import { useFocusEffect } from "@react-navigation/native";
 
 function HomeScreen() {
   const [posts, setPosts] = useState([
@@ -75,9 +76,16 @@ function HomeScreen() {
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
+  // useEffect(() => {
+  //   fetchPosts();
+  // }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchPosts();
+    }, [])
+  );
+
 
   const fetchPosts = () => {
     // Simulated API call to fetch posts

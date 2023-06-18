@@ -16,6 +16,7 @@ import MyTeams from "../pages/Admin/MyTeams";
 import EditProfile from "../pages/EditProfile";
 import * as SecureStore from "expo-secure-store";
 import GoogleMapsPage from "../pages/Admin/MapPage";
+import { TeamContext, TeamProvider } from "../contexts/teamContext";
 
 export const AuthContext = React.createContext(null);
 
@@ -167,6 +168,7 @@ export default function App({ navigation }) {
 
   return (
     <AuthContext.Provider value={authContext}>
+      <TeamProvider value={TeamContext}>
       <NavigationContainer>
         {state.isLoading ? (
           // We haven't finished checking for the token yet
@@ -233,6 +235,7 @@ export default function App({ navigation }) {
           </Tab.Navigator>
         )}
       </NavigationContainer>
+      </TeamProvider>
     </AuthContext.Provider>
   );
 }

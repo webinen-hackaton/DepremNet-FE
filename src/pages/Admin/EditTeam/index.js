@@ -14,8 +14,11 @@ import { Ionicons } from "@expo/vector-icons";
 import { Avatar } from "react-native-elements";
 import { Picker } from "@react-native-picker/picker";
 import StandartButton from "../../../components/button";
+import {TeamContext} from "../../../contexts/teamContext"
+import { useNavigation } from "@react-navigation/native";
 
 export default EditTeam = () => {
+  const { navigate } = useNavigation();
   const [teamName, setTeamName] = useState("");
   const [teamType, setTeamType] = useState("Sağlık Ekibi");
   const [teamStatus, setTeamStatus] = useState("Yolda");
@@ -28,8 +31,7 @@ export default EditTeam = () => {
     "Sağlık Ekibi",
     "Temel Gıda Sağlayıcılar",
     "Kıyafet Sağlayıcılar",
-    "Çadır Ekibi",
-    "Koy",
+    "Çadır Ekibi"
   ];
   const teamStatusOptions = [
     "Yolda",
@@ -44,27 +46,16 @@ export default EditTeam = () => {
   // Example mock members data
   const [mockMembers, setMockMembers] = useState([]);
 
-  const fetchMockMembers = async () => {
-    try {
-      const response = await fetch("https://randomuser.me/api/?results=20");
-      const data = await response.json();
-      const results = data.results;
+  const { people , team, setTeam, setTeams, teams} = React.useContext(TeamContext)
+  const [updatedTeams, setUpdatedTeams] = useState([...teams]);
 
-      const members = results.map((result, index) => ({
-        id: index + 1,
-        avatar: result.picture.large,
-        name: `${result.name.first} ${result.name.last}`,
-        role: result.location.city,
-      }));
 
-      setMockMembers(members);
-    } catch (error) {
-      console.error("Error fetching mock members:", error);
-    }
-  };
 
   useEffect(() => {
-    fetchMockMembers();
+    setSelectedMembers(team?.people);
+    setTeamName(team?.name);
+    setTeamType(team?.type);
+    setTeamStatus(team?.status);
   }, []);
 
   const handleAddMember = () => {
@@ -77,7 +68,7 @@ export default EditTeam = () => {
     );
 
     if (index === -1) {
-      if (selectedMembers.length < 5) {
+      if (selectedMembers?.length < 5) {
         setSelectedMembers([...selectedMembers, member]);
       }
     } else {
@@ -107,6 +98,25 @@ export default EditTeam = () => {
       </TouchableOpacity>
     );
   };
+
+  const saveTeam = () => {
+    const updatedTeam = {
+      name: teamName,
+      type: teamType,
+      status: teamStatus,
+      people: selectedMembers,
+    };
+    const index = updatedTeams.findIndex((t) => t.id === team.id);
+    if (index !== -1) {
+      updatedTeams[index] = updatedTeam;
+    }
+    setTeams(updatedTeams);
+    setTeam(updatedTeam);
+    navigate("MyTeams");
+
+  }
+
+  
 
   return (
     <>
@@ -154,7 +164,7 @@ export default EditTeam = () => {
 
           <View style={styles.memberContainer}>
             <Text style={styles.memberText}>
-              Üye ({selectedMembers.length}/5):
+              Üye ({selectedMembers?.length ? selectedMembers.length:0}/5):
             </Text>
             <TouchableOpacity
               style={styles.addMemberButton}
@@ -165,7 +175,7 @@ export default EditTeam = () => {
           </View>
 
           <View style={styles.selectedMembersContainer}>
-            {selectedMembers.map((member, index) => (
+            {selectedMembers?.map((member, index) => (
               <View key={index} style={styles.memberItem}>
                 <Avatar
                   rounded
@@ -179,14 +189,14 @@ export default EditTeam = () => {
           </View>
 
           <View style={styles.buttonContainer}>
-            <StandartButton text="Kaydet" onPress={() => {}} />
+            <StandartButton text="Kaydet" onClick={() => {saveTeam()}} />
           </View>
 
           <Modal visible={isMemberModalVisible} animationType="slide">
             <View style={styles.modalContainer}>
               <Text style={styles.modalTitle}>Üyeler</Text>
               <FlatList
-                data={mockMembers}
+                data={people}
                 renderItem={renderMemberItem}
                 keyExtractor={(item) => item.id.toString()}
                 numColumns={2}
@@ -268,7 +278,7 @@ const styles = StyleSheet.create({
   memberContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 16,
+    paddingBottom: 16,
   },
   memberText: {
     fontSize: 16,

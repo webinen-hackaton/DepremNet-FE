@@ -4,42 +4,32 @@ import { Ionicons } from "@expo/vector-icons";
 import { Avatar } from "react-native-elements";
 import ModalDropdown from "react-native-modal-dropdown";
 import StandartButton from "../../../components/button";
+import {TeamContext} from "../../../contexts/teamContext"
+import { useNavigation } from "@react-navigation/native";
 
 export default AddTeam = () => {
+  const { navigate } = useNavigation();
   const [teamName, setTeamName] = useState("");
   const [teamType, setTeamType] = useState("");
-  const [teamStatus, setTeamStatus] = useState("");
+  const [teamStatus, setTeamStatus] = useState("Beklemede");
   const [selectedMembers, setSelectedMembers] = useState([]);
   const [isMemberModalVisible, setIsMemberModalVisible] = useState(false);
 
-  const teamTypeOptions = ["Arama Kurtarma Ekibi", "Sağlık Ekibi", "Temel Gıda Sağlayıcılar", "Kıyafet Sağlayıcılar", "Çadır Ekibi", "Koy"];
-  const teamStatusOptions = ["Yolda", "Görevde", "İstirahatte", "Dağıldı", "Yemek Molası"];
+  const teamTypeOptions = ["Arama Kurtarma Ekibi", "Sağlık Ekibi", "Temel Gıda Sağlayıcılar", "Kıyafet Sağlayıcılar", "Çadır Ekibi", "Çadır Ekibi"];
+  // const teamStatusOptions = ["Yolda", "Görevde", "İstirahatte", "Dağıldı", "Yemek Molası"];
 
   // Example mock members data
   const [mockMembers, setMockMembers] = useState([]);
+  const { people , team, setTeam, setTeams, teams} = React.useContext(TeamContext)
+  const [updatedTeams, setUpdatedTeams] = useState([...teams]);
 
-  const fetchMockMembers = async () => {
-    try {
-      const response = await fetch("https://randomuser.me/api/?results=20");
-      const data = await response.json();
-      const results = data.results;
 
-      const members = results.map((result, index) => ({
-        id: index + 1,
-        avatar: result.picture.large,
-        name: `${result.name.first} ${result.name.last}`,
-        role: result.location.city,
-      }));
-
-      setMockMembers(members);
-    } catch (error) {
-      console.error("Error fetching mock members:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchMockMembers();
-  }, []);
+  // useEffect(() => {
+    // setSelectedMembers(team?.people);
+    // setTeamName(team?.name);
+    // setTeamType(team?.type);
+    // setTeamStatus(team?.status);
+  // }, []);
 
   const handleAddMember = () => {
     setIsMemberModalVisible(true);
@@ -49,7 +39,7 @@ export default AddTeam = () => {
     const index = selectedMembers.findIndex((selectedMember) => selectedMember.id === member.id);
 
     if (index === -1) {
-      if (selectedMembers.length < 5) {
+      if (selectedMembers?.length < 5) {
         setSelectedMembers([...selectedMembers, member]);
       }
     } else {
@@ -60,7 +50,7 @@ export default AddTeam = () => {
   };
 
   const renderMemberItem = ({ item }) => {
-    const isSelected = selectedMembers.some((selectedMember) => selectedMember.id === item.id);
+    const isSelected = selectedMembers?.some((selectedMember) => selectedMember.id === item.id);
 
     return (
       <TouchableOpacity
@@ -77,6 +67,22 @@ export default AddTeam = () => {
       </TouchableOpacity>
     );
   };
+
+  const saveTeam = () => {
+    const updatedTeam = {
+      name: teamName,
+      type: teamType,
+      status: teamStatus,
+      people: selectedMembers,
+    };
+  ;
+    updatedTeams.unshift(updatedTeam);
+
+    setTeams(updatedTeams);
+    setTeam(updatedTeam);
+    navigate("MyTeams");
+
+  }
 
   return (
     <ScrollView>
@@ -103,14 +109,14 @@ export default AddTeam = () => {
 
 
         <View style={styles.memberContainer}>
-          <Text style={styles.memberText}>Member ({selectedMembers.length}/5):</Text>
+          <Text style={styles.memberText}>Üye ({selectedMembers?.length ? selectedMembers.length:0}/5):</Text>
           <TouchableOpacity style={styles.addMemberButton} onPress={handleAddMember}>
             <Ionicons name="add" size={18} color="black" />
           </TouchableOpacity>
         </View>
 
         <View style={styles.selectedMembersContainer}>
-          {selectedMembers.map((member, index) => (
+          {selectedMembers?.map((member, index) => (
             <View key={index} style={styles.memberItem}>
               <Avatar
                 rounded
@@ -123,14 +129,14 @@ export default AddTeam = () => {
           ))}
         </View>
             <View style={styles.buttonContainer}>
-        <StandartButton text="Kaydet" onPress={() => {}}  />
+        <StandartButton text="Kaydet" onClick={() => {saveTeam()}}  />
         </View>
 
         <Modal visible={isMemberModalVisible} animationType="slide">
           <View style={styles.modalContainer}>
             <Text style={styles.modalTitle}>Üyeler</Text>
             <FlatList
-              data={mockMembers}
+              data={people}
               renderItem={renderMemberItem}
               keyExtractor={(item) => item.id.toString()}
               numColumns={2}
@@ -176,7 +182,7 @@ const styles = StyleSheet.create({
   memberContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 16,
+    paddingBottom: 16,
   },
   memberText: {
     fontSize: 16,

@@ -3,129 +3,50 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Avatar } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
+import { TeamContext } from "../../../contexts/teamContext"
+
 
 export default MyTeamsPage = () => {
-    const {navigate} = useNavigation();
+  const { navigate } = useNavigation();
+  const { teams, setTeam, team, setTeams } = React.useContext(TeamContext)
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Takımlarım</Text>
-        <TouchableOpacity style={styles.addButton} onPress={()=>{navigate("addTeam")}}>
+        <TouchableOpacity style={styles.addButton} onPress={() => { navigate("addTeam") }}>
           <Ionicons name="add" size={24} color="black" />
         </TouchableOpacity>
       </View>
 
       <View style={styles.teamContainer}>
-        <View style={styles.teamBox}>
-          <Text style={styles.teamName}>Takım 1</Text>
-          <View style={styles.avatarContainer}>
-          
-            <Avatar
-              rounded
-              source={{
-                uri: "https://randomuser.me/api/portraits/women/1.jpg",
-              }}
-              containerStyle={styles.avatar}
-            />
-            <Avatar
-              rounded
-              source={{
-                uri: "https://randomuser.me/api/portraits/men/2.jpg",
-              }}
-              containerStyle={styles.avatar}
-            />
-            <Avatar
-              rounded
-              source={{
-                uri: "https://randomuser.me/api/portraits/women/2.jpg",
-              }}
-              containerStyle={styles.avatar}
-            />
-            <Avatar
-              rounded
-              source={{
-                uri: "https://randomuser.me/api/portraits/men/3.jpg",
-              }}
-              containerStyle={styles.avatar}
-            />
-          </View>
-          <TouchableOpacity style={styles.editButton} onPress={()=>{navigate("editTeam")}}>
-            <Ionicons name="create" size={18} color="black" />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.teamBox}>
-          <Text style={styles.teamName}>Takım 2</Text>
-          <View style={styles.avatarContainer}>
-            <Avatar
-              rounded
-              source={{
-                uri: "https://randomuser.me/api/portraits/men/4.jpg",
-              }}
-              containerStyle={styles.avatar}
-            />
-            <Avatar
-              rounded
-              source={{
-                uri: "https://randomuser.me/api/portraits/women/3.jpg",
-              }}
-              containerStyle={styles.avatar}
-            />
-            <Avatar
-              rounded
-              source={{
-                uri: "https://randomuser.me/api/portraits/men/5.jpg",
-              }}
-              containerStyle={styles.avatar}
-            />
-            <Avatar
-              rounded
-              source={{
-                uri: "https://randomuser.me/api/portraits/women/4.jpg",
-              }}
-              containerStyle={styles.avatar}
-            />
-            <Avatar
-              rounded
-              source={{
-                uri: "https://randomuser.me/api/portraits/men/6.jpg",
-              }}
-              containerStyle={styles.avatar}
-            />
-          </View>
-          <TouchableOpacity style={styles.editButton} onPress={()=>{navigate("editTeam")}}>
-            <Ionicons name="create" size={18} color="black" />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.teamBox}>
-          <Text style={styles.teamName}>Takım 3</Text>
-          <View style={styles.avatarContainer}>
-            <Avatar
-              rounded
-              source={{
-                uri: "https://randomuser.me/api/portraits/men/7.jpg",
-              }}
-              containerStyle={styles.avatar}
-            />
-            <Avatar
-              rounded
-              source={{
-                uri: "https://randomuser.me/api/portraits/women/5.jpg",
-              }}
-              containerStyle={styles.avatar}
-            />
-            <Avatar
-              rounded
-              source={{
-                uri: "https://randomuser.me/api/portraits/men/8.jpg",
-              }}
-              containerStyle={styles.avatar}
-            />
+        {teams &&
+          teams.map((eachTeam) => (
+            <View style={styles.teamBox} key={eachTeam.id}>
+              <Text style={styles.teamName}>{eachTeam?.name}</Text>
+              <View style={styles.avatarContainer}>
+                {eachTeam?.people.map((member) => (
+                  <Avatar
+                    rounded
+                    source={{
+                      uri: member?.avatar,
+                    }}
+                    containerStyle={styles.avatar}
+                    key={member.id} // Add a unique key for each member
+                  />
+                ))}
+              </View>
+              <TouchableOpacity
+                style={styles.editButton}
+                onPress={() => {
+                  setTeam(eachTeam);
+                  navigate("editTeam");
+                }}
+              >
+                <Ionicons name="create" size={18} color="black" />
+              </TouchableOpacity>
+            </View>
+          ))}
 
-          </View>
-          <TouchableOpacity style={styles.editButton} onPress={()=>{navigate("editTeam")}}>
-            <Ionicons name="create" size={18} color="black" />
-          </TouchableOpacity>
-        </View>
       </View>
     </View>
   );

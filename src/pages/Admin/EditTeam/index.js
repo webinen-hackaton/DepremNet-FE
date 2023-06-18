@@ -1,5 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, TextInput, StyleSheet, Modal, FlatList, ScrollView, Button } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  StyleSheet,
+  Modal,
+  FlatList,
+  ScrollView,
+  Button,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Avatar } from "react-native-elements";
 import { Picker } from "@react-native-picker/picker";
@@ -7,13 +17,29 @@ import StandartButton from "../../../components/button";
 
 export default EditTeam = () => {
   const [teamName, setTeamName] = useState("");
-  const [teamType, setTeamType] = useState("");
-  const [teamStatus, setTeamStatus] = useState("");
+  const [teamType, setTeamType] = useState("Sağlık Ekibi");
+  const [teamStatus, setTeamStatus] = useState("Yolda");
   const [selectedMembers, setSelectedMembers] = useState([]);
   const [isMemberModalVisible, setIsMemberModalVisible] = useState(false);
-
-  const teamTypeOptions = ["Arama Kurtarma Ekibi", "Sağlık Ekibi", "Temel Gıda Sağlayıcılar", "Kıyafet Sağlayıcılar", "Çadır Ekibi", "Koy"];
-  const teamStatusOptions = ["Yolda", "Görevde", "İstirahatte", "Dağıldı", "Yemek Molası"];
+  const [statusPickerVisible, setStatusPickerVisible] = useState(false);
+  const [typePickerVisible, setTypePickerVisible] = useState(false);
+  const teamTypeOptions = [
+    "Arama Kurtarma Ekibi",
+    "Sağlık Ekibi",
+    "Temel Gıda Sağlayıcılar",
+    "Kıyafet Sağlayıcılar",
+    "Çadır Ekibi",
+    "Koy",
+  ];
+  const teamStatusOptions = [
+    "Yolda",
+    "Görevde",
+    "İstirahatte",
+    "Dağıldı",
+    "Yemek Molası",
+  ];
+  const pickerRef = useRef();
+  const typePickerRef = useRef();
 
   // Example mock members data
   const [mockMembers, setMockMembers] = useState([]);
@@ -46,7 +72,9 @@ export default EditTeam = () => {
   };
 
   const handleSelectMember = (member) => {
-    const index = selectedMembers.findIndex((selectedMember) => selectedMember.id === member.id);
+    const index = selectedMembers.findIndex(
+      (selectedMember) => selectedMember.id === member.id
+    );
 
     if (index === -1) {
       if (selectedMembers.length < 5) {
@@ -60,7 +88,9 @@ export default EditTeam = () => {
   };
 
   const renderMemberItem = ({ item }) => {
-    const isSelected = selectedMembers.some((selectedMember) => selectedMember.id === item.id);
+    const isSelected = selectedMembers.some(
+      (selectedMember) => selectedMember.id === item.id
+    );
 
     return (
       <TouchableOpacity
@@ -78,96 +108,138 @@ export default EditTeam = () => {
     );
   };
 
-  return (<>
-    <ScrollView>
-      <View style={styles.container}>
-        <Text style={styles.title}>Düzenle</Text>
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Takım Adı:</Text>
-          <TextInput
-            style={styles.input}
-            value={teamName}
-            onChangeText={setTeamName}
-          />
-        </View>
-
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Takım Türü:</Text>
-          <Picker
-            style={styles.input}
-            selectedValue={teamType}
-            onValueChange={(value) => setTeamType(value)}
-          >
-            <Picker.Item label="Seçiniz" value="" />
-            {teamTypeOptions.map((option) => (
-              <Picker.Item key={option} label={option} value={option} />
-            ))}
-          </Picker>
-        </View>
-
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Takım Durumu:</Text>
-          
-        </View>
-
-        <View style={styles.memberContainer}>
-          <Text style={styles.memberText}>Üye ({selectedMembers.length}/5):</Text>
-          <TouchableOpacity style={styles.addMemberButton} onPress={handleAddMember}>
-            <Ionicons name="add" size={18} color="black" />
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.selectedMembersContainer}>
-          {selectedMembers.map((member, index) => (
-            <View key={index} style={styles.memberItem}>
-              <Avatar
-                rounded
-                source={{ uri: member.avatar }}
-                containerStyle={styles.memberAvatar}
-              />
-              <Text style={styles.memberName}>{member.name}</Text>
-              <Text style={styles.memberRole}>{member.role}</Text>
-            </View>
-          ))}
-        </View>
-
-        <View style={styles.buttonContainer}>
-          <StandartButton text="Kaydet" onPress={() => {}}  />
-        </View>
-
-        <Modal visible={isMemberModalVisible} animationType="slide">
-          <View style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>Üyeler</Text>
-            <FlatList
-              data={mockMembers}
-              renderItem={renderMemberItem}
-              keyExtractor={(item) => item.id.toString()}
-              numColumns={2}
-              contentContainerStyle={styles.memberList}
+  return (
+    <>
+      <ScrollView>
+        <View style={styles.container}>
+          <Text style={styles.title}>Düzenle</Text>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Takım Adı:</Text>
+            <TextInput
+              style={styles.input}
+              value={teamName}
+              onChangeText={setTeamName}
             />
+          </View>
+
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Takım Türü:</Text>
             <TouchableOpacity
-              style={styles.closeModalButton}
-              onPress={() => setIsMemberModalVisible(false)}
+              style={{
+                borderWidth: 1,
+                borderColor: "gray",
+                borderRadius: 8,
+                padding: 8,
+              }}
+              onPress={() => setTypePickerVisible(true)}
             >
-              <Text style={styles.closeModalButtonText}>Kapat</Text>
+              <Text>{teamType ? teamType : "Seçiniz"}</Text>
             </TouchableOpacity>
           </View>
-        </Modal>
-      </View>
-      
-    </ScrollView>
-    <Picker
-    style={styles.input}
-    selectedValue={teamStatus}
-    onValueChange={(value) => setTeamStatus(value)}
-  >
-    <Picker.Item label="Seçiniz" value="" />
-    {teamStatusOptions.map((option) => (
-      <Picker.Item key={option} label={option} value={option} />
-    ))}
-  </Picker></>
+
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Takım Durumu:</Text>
+            <TouchableOpacity
+              style={{
+                borderWidth: 1,
+                borderColor: "gray",
+                borderRadius: 8,
+                padding: 8,
+              }}
+              onPress={() => setStatusPickerVisible(true)}
+            >
+              <Text>{teamStatus ? teamStatus : "Seçiniz"}</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.memberContainer}>
+            <Text style={styles.memberText}>
+              Üye ({selectedMembers.length}/5):
+            </Text>
+            <TouchableOpacity
+              style={styles.addMemberButton}
+              onPress={handleAddMember}
+            >
+              <Ionicons name="add" size={18} color="black" />
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.selectedMembersContainer}>
+            {selectedMembers.map((member, index) => (
+              <View key={index} style={styles.memberItem}>
+                <Avatar
+                  rounded
+                  source={{ uri: member.avatar }}
+                  containerStyle={styles.memberAvatar}
+                />
+                <Text style={styles.memberName}>{member.name}</Text>
+                <Text style={styles.memberRole}>{member.role}</Text>
+              </View>
+            ))}
+          </View>
+
+          <View style={styles.buttonContainer}>
+            <StandartButton text="Kaydet" onPress={() => {}} />
+          </View>
+
+          <Modal visible={isMemberModalVisible} animationType="slide">
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalTitle}>Üyeler</Text>
+              <FlatList
+                data={mockMembers}
+                renderItem={renderMemberItem}
+                keyExtractor={(item) => item.id.toString()}
+                numColumns={2}
+                contentContainerStyle={styles.memberList}
+              />
+              <TouchableOpacity
+                style={styles.closeModalButton}
+                onPress={() => setIsMemberModalVisible(false)}
+              >
+                <Text style={styles.closeModalButtonText}>Kapat</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+        </View>
+      </ScrollView>
+      {statusPickerVisible && (
+        <Picker
+          ref={pickerRef}
+          style={styles.input}
+          selectedValue={teamStatus}
+          onValueChange={(value) => {
+            setTeamStatus(value);
+
+            pickerRef.current.blur();
+            setStatusPickerVisible(false);
+          }}
+        >
+          <Picker.Item label="Seçiniz" value="" />
+          {teamStatusOptions.map((option) => (
+            <Picker.Item key={option} label={option} value={option} />
+          ))}
+        </Picker>
+      )}
+      {typePickerVisible && (
+        <Picker
+          ref={typePickerRef}
+          style={styles.input}
+          selectedValue={teamType}
+          onValueChange={(value) => {
+            setTeamType(value);
+            typePickerRef.current.blur();
+            setTypePickerVisible(false);
+          }}
+        >
+          <Picker.Item label="Seçiniz" value="" />
+          {teamTypeOptions.map((option) => (
+            <Picker.Item key={option} label={option} value={option} />
+          ))}
+        </Picker>
+      )}
+    </>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {

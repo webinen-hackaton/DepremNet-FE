@@ -1,9 +1,10 @@
 import axios from "axios";
 import { Keyboard, Platform } from "react-native";
-import * as RootNavigation from "../navigation/rootNavigation";
-import { store } from "../redux/store";
+// import * as RootNavigation from "../navigation/rootNavigation";
+// import { store } from "../redux/store";
 import * as _ from "lodash";
 import { SERVER_URL } from "../config";
+import * as SecureStore from "expo-secure-store";
 
 // const hookStore = (which, error) => {
 //   const _paymentError = useSelector(paymentErrorStatus)
@@ -27,9 +28,9 @@ const _handleCommonError = (errorResponse) => {
 
 axios.interceptors.request.use(
   async (config) => {
-    if (config.method !== "GET" && config.method !== "get") Keyboard.dismiss();
+    // if (config.method !== "GET" && config.method !== "get") Keyboard.dismiss();
     // await AsyncStorage.removeItem('token')
-    const token = store.getState().auth.token;
+    const token = await SecureStore.getItemAsync("userToken");
     if (token) {
       config.headers.Authorization = token;
     } else {
@@ -40,6 +41,7 @@ axios.interceptors.request.use(
     return config;
   },
   async (error) => {
+    console.log("Errosr", error);
     // _interceptorsResponseError(error);
     return Promise.reject(error);
   }
@@ -48,18 +50,18 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   (response) => {
     console.log("response", response.config.url);
-    if (response.status === 222) {
-      const currentRoute =
-        RootNavigation.navigationRef.current.getCurrentRoute().name;
-      if (currentRoute == "OTP") {
-        RootNavigation.navigationRef.current.goBack();
-      }
-    } else if (response.status === 223) console.log("223");
+    // if (response.status === 222) {
+    //   const currentRoute =
+    //     RootNavigation.navigationRef.current.getCurrentRoute().name;
+    //   if (currentRoute == "OTP") {
+    //     RootNavigation.navigationRef.current.goBack();
+    //   }
+    // } else if (response.status === 223) console.log("223");
 
     return response;
   },
   (error) => {
-    console.log("error", JSON.stringify(error.response));
+    console.log("error", JSON.stringify(error));
     if (error && error.response && error.response.status)
       switch (error.response.status) {
         case 401:
@@ -75,18 +77,22 @@ axios.interceptors.response.use(
   }
 );
 
-const loginv1 = (req) => axios.post(BASE_URL + "/consumers/check", req);
+const register = (req) =>
+  axios.post(BASE_URL + "/api/auth/register/?format=json", req);
 
 const login = (req) =>
-  axios.post(BASE_URL + "/consumers/check", req, {
-    headers: {
-      "User-Agent":
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36",
-    },
-  });
+  axios.post(BASE_URL + "/api/auth/login/?format=json", req);
+
+const getProfile = (id) => axios.get(BASE_URL + `/api/user/${id}/?format=json`);
+
+const updateProfile = (id, req) =>
+  axios.put(BASE_URL + `/api/user/${id}/?format=json`, req);
+
+const setLocation = (id, req) =>
+  axios.put(BASE_URL + `/api/user/${id}/?format=json`, req);
+
 
 const validatePhone = (req) =>
   axios.post(BASE_URL + "/consumers/verify-otp", req);
-const getProfile = () => axios.get(BASE_URL + "/consumers/profile");
 
-export { login, validatePhone, getProfile, loginv1 };
+export { login, validatePhone, getProfile, register, updateProfile };

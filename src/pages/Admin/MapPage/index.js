@@ -39,6 +39,7 @@ const GoogleMapsPage = () => {
                 longitude: location.coords.longitude,
               }}
               title="My Location"
+              pinColor='blue'
             />
           </MapView>
         )}

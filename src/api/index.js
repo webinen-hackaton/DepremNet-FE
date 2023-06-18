@@ -83,9 +83,13 @@ const register = (req) =>
 const login = (req) =>
   axios.post(BASE_URL + "/api/auth/login/?format=json", req);
 
-const getProfile = (id) => axios.get(BASE_URL + `/api/user/?${id}format=json`);
+const getProfile = (id) => axios.get(BASE_URL + `/api/user/${id}/?format=json`);
+
+const updateProfile = (id, req) =>
+  axios.put(BASE_URL + `/api/user/${id}/?format=json`, req);
+
 
 const validatePhone = (req) =>
   axios.post(BASE_URL + "/consumers/verify-otp", req);
 
-export { login, validatePhone, getProfile, register };
+export { login, validatePhone, getProfile, register, updateProfile };

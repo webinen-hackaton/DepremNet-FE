@@ -18,6 +18,7 @@ import * as SecureStore from "expo-secure-store";
 import jwt_decode from "jwt-decode";
 import { getProfile } from "../../api";
 import * as Location from 'expo-location';
+import { useFocusEffect } from "@react-navigation/native";
 
 export default ProfileScreen = () => {
   const { navigate } = useNavigation();
@@ -57,7 +58,7 @@ export default ProfileScreen = () => {
 
     getProfile(decoded.id)
       .then((res) => {
-        console.log("res", res);
+        console.log("res", res.data);
         setData(res.data);
       })
       .catch((e) => {
@@ -67,11 +68,12 @@ export default ProfileScreen = () => {
     console.log(decoded);
   };
 
-  useEffect(() => {
+  useFocusEffect(React.useCallback(() => {
     handleProfile();
 
     return () => {};
-  }, []);
+  }, []));
+
   const updateLocation = async () => {
     try {
       await Location.requestForegroundPermissionsAsync();
@@ -90,10 +92,10 @@ export default ProfileScreen = () => {
         <View style={styles.profileContainer}>
           <Image
             style={styles.profileImage}
-            source={{ uri: profileImagePlaceholder }}
+            source={{ uri: (data?.profile_photo ? data.profile_photo:`https://i.pravatar.cc/150?img=${data?.id}`) }}
           />
-          <Text style={styles.userNameText}>Furkan Pınar</Text>
-          <Text style={styles.nicknameText}>@rsazotype</Text>
+          <Text style={styles.userNameText}>{data?.first_name+ " " + data?.last_name}</Text>
+          {/* <Text style={styles.nicknameText}>@rsazotype</Text> */}
           <View style={styles.buttonContainer}>
 
           {amISafe ?

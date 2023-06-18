@@ -206,6 +206,10 @@ export default function App({ navigation }) {
                   };
                 } else if (route.name === "Profile") {
                   iconName = focused ? "person" : "person-outline";
+                } else if (route.name === "MyTeam") {
+                  iconName = focused ? "people" : "people-outline";
+                } else if (route.name === "Map") {
+                  iconName = focused ? "map" : "map-outline";
                 }
 
                 return (
@@ -222,9 +226,10 @@ export default function App({ navigation }) {
             })}
           >
             <Tab.Screen name="Home" component={HomeStack} />
+            <Tab.Screen name="Map" component={GoogleMapsPage} />
             <Tab.Screen name="Paylaş" component={CreatePostStack} />
+            <Tab.Screen name="MyTeam" component={MyTeamsStack} />
             <Tab.Screen name="Profile" component={ProfileStack} />
-            {/* <Stack.Screen name="myTeam" component={MyTeamsStack} /> */}
           </Tab.Navigator>
         )}
       </NavigationContainer>

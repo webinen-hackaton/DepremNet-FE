@@ -1,10 +1,37 @@
-import { TouchableOpacity, StyleSheet, Text, View, Image, ImageBackground } from 'react-native';
-import { Linking } from 'react-native';
-import React from 'react';
+import {
+  TouchableOpacity,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ImageBackground,
+} from "react-native";
+import { Linking } from "react-native";
+import React from "react";
 
-const Post = ({ username = "", profileImage="", imageLink = "", passTimeText = "", postText = "", status = "rescued", locationLink = "" }) => {
-  const urgencyColors = ["#00FF00", "#33FF00", "#66FF00", "#99FF00", "#CCFF00", "#FFFF00", "#FFCC00", "#FF9900", "#FF6600", "#FF3300", "#FF0000"];
-  
+const Post = ({
+  username = "",
+  profileImage = "",
+  imageLink = "",
+  passTimeText = "",
+  postText = "",
+  status = "rescued",
+  locationLink = "",
+}) => {
+  const urgencyColors = [
+    "#00FF00",
+    "#33FF00",
+    "#66FF00",
+    "#99FF00",
+    "#CCFF00",
+    "#FFFF00",
+    "#FFCC00",
+    "#FF9900",
+    "#FF6600",
+    "#FF3300",
+    "#FF0000",
+  ];
+
   const getStatusColor = (status) => {
     if (status === "rescued") {
       return "#00FF00"; // Yeşil
@@ -22,39 +49,46 @@ const Post = ({ username = "", profileImage="", imageLink = "", passTimeText = "
   };
 
   const handleRescue = () => {
-    alert("Kurtarıldı");
+    // alert("Kurtarıldı");
   };
-
 
   return (
     <View style={styles.container}>
       <Image style={styles.profileImage} source={{ uri: profileImage }} />
       <View style={styles.postInfo}>
         <View style={styles.postTop}>
-        <Text style={styles.username}>{username}</Text>
-        <Text style={styles.passTime}>{passTimeText} önce</Text>
+          <Text style={styles.username}>{username}</Text>
+          <Text style={styles.passTime}>{passTimeText} önce</Text>
         </View>
         <Text style={styles.postText}>{postText}</Text>
         <View style={styles.postContainer}>
-        {imageLink !== "" && <ImageBackground style={styles.postImage} source={{ uri: imageLink }} />}</View>
+          {imageLink !== "" && (
+            <ImageBackground
+              style={styles.postImage}
+              source={{ uri: imageLink }}
+            />
+          )}
+        </View>
         <View style={styles.postBottom}>
           <TouchableOpacity onPress={() => openGoogleMaps(locationLink)}>
-            <Image style={styles.locationIcon} source={require('../../assets/location.png')} />
+            <Image
+              style={styles.locationIcon}
+              source={require("../../assets/location.png")}
+            />
           </TouchableOpacity>
           {/* <View style={[styles.urgencyIndicator, { backgroundColor: urgencyColors[emergencyLevel] }]} >
           </View> */}
           {status === "rescued" ? (
             <Text style={[styles.status]}>Kurtarıldı</Text>
-          ) : ( status=="On Way" ?
+          ) : status == "On Way" ? (
             <TouchableOpacity onPress={() => handleRescue()}>
               <Text style={[styles.status]}>Yolda</Text>
             </TouchableOpacity>
-          :
-          (
+          ) : (
             <TouchableOpacity onPress={() => handleRescue()}>
               <Text style={[styles.status]}>Kurtarılmayı Bekliyor</Text>
             </TouchableOpacity>
-          ))}
+          )}
         </View>
       </View>
     </View>
@@ -65,11 +99,11 @@ export default Post;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
+    flexDirection: "row",
     padding: 10,
     marginVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    borderBottomColor: "#ccc",
     dropShadowColor: "#000",
     dropShadowOffset: {
       width: 0,
@@ -78,7 +112,6 @@ const styles = StyleSheet.create({
     dropShadowOpacity: 0.25,
     dropShadowRadius: 3.84,
     elevation: 5,
-
   },
   profileImage: {
     width: 50,
@@ -90,13 +123,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   username: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 16,
     marginBottom: 5,
   },
   passTime: {
     fontSize: 12,
-    color: '#888',
+    color: "#888",
     marginBottom: 5,
     paddingRight: 10,
   },
@@ -104,16 +137,16 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   postImage: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
   },
   postBottom: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingHorizontal: 10,
-    width: '100%',
+    width: "100%",
   },
   locationIcon: {
     width: 20,
@@ -125,26 +158,24 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 10,
     marginRight: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-
+    alignItems: "center",
+    justifyContent: "center",
   },
   status: {
-    fontWeight: 'bold',
-    borderWidth:2,
+    fontWeight: "bold",
+    borderWidth: 2,
     borderRadius: 10,
     padding: 5,
   },
   postTop: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   postContainer: {
     borderRadius: 15,
     marginVertical: 10,
-    width: '98%',
+    width: "98%",
     height: 200,
-    overflow: 'hidden',
-  }
-
+    overflow: "hidden",
+  },
 });

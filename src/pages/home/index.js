@@ -86,7 +86,6 @@ function HomeScreen() {
     }, [])
   );
 
-
   const fetchPosts = () => {
     // Simulated API call to fetch posts
     setLoading(true);
@@ -139,7 +138,7 @@ function HomeScreen() {
         passTimeText: "30 dakika",
         postText: "Gıda ve içme suyuna ihtiyacımız var.",
         status: "rescued",
-        locationLink: "https://www.google.com/maps?q=36.8841°+N,+30.7056°+",
+        locationLink: "https://www.google.com/maps?q=36.8841°+N,+30.7056°+E",
         profileImage: "https://i.pravatar.cc/150?",
         username: "Ece Korkmaz",
       },

@@ -60,8 +60,8 @@ function SignInScreen() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
-      <ScrollView>
-        <KeyboardAvoidingView style={{ flex: 1 }}>
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
+        <ScrollView>
           <View
             style={{
               flex: 1,
@@ -240,8 +240,8 @@ function SignInScreen() {
               </Text>
             </TouchableOpacity>
           </View>
-        </KeyboardAvoidingView>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
       {/* <Button title="Sign in" onPress={() => signIn({ username, password })} /> */}
     </SafeAreaView>
   );

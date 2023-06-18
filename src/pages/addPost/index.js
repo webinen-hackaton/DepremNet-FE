@@ -10,7 +10,7 @@ import {
   Platform,
   Alert,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { Ionicons } from "@expo/vector-icons";
@@ -31,8 +31,10 @@ export default function AddPost() {
   }, []);
 
   const getPermissionsAsync = async () => {
-    const { status: cameraStatus } = await Camera.requestCameraPermissionsAsync();
-    const { status: mediaLibraryStatus } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    const { status: cameraStatus } =
+      await Camera.requestCameraPermissionsAsync();
+    const { status: mediaLibraryStatus } =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (cameraStatus === "granted" && mediaLibraryStatus === "granted") {
       setCameraPermission(true);
     } else {
@@ -59,7 +61,6 @@ export default function AddPost() {
       setImage(result.uri);
     }
   };
-
 
   const openCamera = async () => {
     let permissionResult = await Camera.requestCameraPermissionsAsync();
@@ -90,6 +91,7 @@ export default function AddPost() {
     // Paylaşma işlemini burada gerçekleştirin
 
     handleCancel();
+    navigate("Home");
   };
 
   if (cameraPermission === null) {
@@ -103,52 +105,70 @@ export default function AddPost() {
   if (cameraPermission === false) {
     return (
       <SafeAreaView style={styles.container}>
-        <Text style={styles.permissionText}>Kamera ve medya kitaplığına erişim izni gerekiyor!</Text>
+        <Text style={styles.permissionText}>
+          Kamera ve medya kitaplığına erişim izni gerekiyor!
+        </Text>
       </SafeAreaView>
     );
   }
 
   return (
     <SafeAreaView style={styles.container}>
-       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={handleCancel}>
-          <Text style={styles.headerButton} onPress={()=>{navigate("Home")}}>İptal et</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleShare} disabled={!text && !image}>
-          <Text style={[styles.headerButton2, !text && !image && { opacity: 1 }]}>
-            Paylaş
-          </Text>
-        </TouchableOpacity>
-      </View>
+          <View style={styles.header}>
+            <TouchableOpacity onPress={handleCancel}>
+              <Text
+                style={styles.headerButton}
+                onPress={() => {
+                  navigate("Home");
+                }}
+              >
+                İptal et
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleShare} disabled={!text && !image}>
+              <Text
+                style={[
+                  styles.headerButton2,
+                  !text && !image && { opacity: 1 },
+                ]}
+              >
+                Paylaş
+              </Text>
+            </TouchableOpacity>
+          </View>
 
-      <TextInput
-        style={styles.textInput}
-        multiline
-        maxLength={280}
-        placeholder="Durumunuz Nedir?"
-        value={text}
-        onChangeText={handleTextChange}
-      />
-    <View style={styles.imageContainer}>
-      <TouchableOpacity style={styles.imageButton} onPress={handleChoosePhoto}>
-        <Ionicons name="image" size={24} color="black" />
-        <Text style={styles.imageButtonText}>Fotoğraf Seç</Text>
-      </TouchableOpacity>
+          <TextInput
+            style={styles.textInput}
+            multiline
+            maxLength={280}
+            placeholder="Durumunuz Nedir?"
+            value={text}
+            onChangeText={handleTextChange}
+          />
+          <View style={styles.imageContainer}>
+            <TouchableOpacity
+              style={styles.imageButton}
+              onPress={handleChoosePhoto}
+            >
+              <Ionicons name="image" size={24} color="black" />
+              <Text style={styles.imageButtonText}>Fotoğraf Seç</Text>
+            </TouchableOpacity>
 
-      <TouchableOpacity style={styles.imageButton} onPress={openCamera}>
-        <Ionicons name="camera" size={24} color="black" />
-        <Text style={styles.imageButtonText}>Fotoğraf Çek</Text>
-      </TouchableOpacity>
-    </View>
+            <TouchableOpacity style={styles.imageButton} onPress={openCamera}>
+              <Ionicons name="camera" size={24} color="black" />
+              <Text style={styles.imageButtonText}>Fotoğraf Çek</Text>
+            </TouchableOpacity>
+          </View>
 
-    <View style={styles.imageContainer2}>
-      {image && (
-        <Image source={{ uri: image }} style={styles.imagePreview} />
-      )}
-    </View></View>
-    </TouchableWithoutFeedback>
+          <View style={styles.imageContainer2}>
+            {image && (
+              <Image source={{ uri: image }} style={styles.imagePreview} />
+            )}
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
     </SafeAreaView>
   );
 }
@@ -158,7 +178,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     marginTop: 32,
-    marginHorizontal: 16
+    marginHorizontal: 16,
   },
   header: {
     flexDirection: "row",
@@ -220,7 +240,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     flexDirection: "row",
-    justifyContent: "space-around"
+    justifyContent: "space-around",
   },
   imageContainer2: {
     borderRadius: 12,

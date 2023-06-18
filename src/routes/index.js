@@ -27,7 +27,7 @@ const HomeStack = () => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen
         name="Home"
-        component={GoogleMapsPage}
+        component={HomeScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

@@ -33,11 +33,14 @@ function SignInScreen() {
       // password: "12345",
     })
       .then(async (res) => {
-        console.log("res", res);
-        if (res.data.access_token) {
-          await SecureStore.setItemAsync("userToken", res.data.access_token);
+        console.log("res", res.headers);
+        if (res?.headers?.authorization) {
+          await SecureStore.setItemAsync(
+            "userToken",
+            res?.headers?.authorization
+          );
           // alert(await SecureStore.getItemAsync("token"));
-          signIn(res.data.access_token);
+          signIn(res?.headers?.authorization);
 
           // navigate("Home");
         }

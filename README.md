@@ -19,11 +19,11 @@ Deprem Net is a mobile application packed with features:
 
 - **Real-time Notifications:** Users receive immediate notifications about earthquakes around the globe.
 
-- **User Interaction:** Users can post updates, share pictures and discuss seismic events.
+- **User Interaction:** Users can post updates, share pictures and ask for emergency help.
 
-- **Safety Measures:** The app provides safety guidelines and best practices during and after an earthquake.
+- **Emergency Teams:** The application has the capability to establish teams for post-earthquake situations.
 
-- **Global Map View:** Visual representation of earthquake occurrences worldwide, updated in real-time.
+- **Global Map View:** Visual representation of earthquake victims to send their locations to the authorities.
 
 ## Installation
 

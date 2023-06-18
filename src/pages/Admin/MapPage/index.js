@@ -3,6 +3,7 @@ import { View, StyleSheet, Text } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { Linking } from "react-native";
+import StandartButton from "../../../components/button";
 
 const GoogleMapsPage = () => {
   const [location, setLocation] = useState(null);
@@ -142,19 +143,20 @@ const GoogleMapsPage = () => {
         }}
       >
         <Text>
+          <View style={{flex:1, width:"100%"}}>
           <Text
             style={{
               color: "red",
               fontWeight: "bold",
-              marginBottom: 10,
             }}
           >
             &#128308; Depremzedeler
           </Text>
           <Text style={{ color: "blue", fontWeight: "bold", marginBottom: 10 }}>
             {"\n\n"}&#128309; Takımlar
-          </Text>
+          </Text></View>
         </Text>
+        <StandartButton text={"ACİL DURUM!"} buttonStyle={{backgroundColor:"red"}} textStyle={{color:"white"}} />
       </View>
     </>
   );

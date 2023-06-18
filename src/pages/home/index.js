@@ -7,11 +7,25 @@ import {
   ScrollView,
   RefreshControl,
   StyleSheet,
+  Alert,
 } from "react-native";
 import Post from "../../components/post";
 import { useFocusEffect } from "@react-navigation/native";
 
+
+
 function HomeScreen() {
+  Alert.alert("Tehlikeli Bölgedesiniz",
+    "Güvenliğiniz amacıyla konum bilgileriniz düzenli olarak yetkililere gönderilecektir.",
+    [
+      {
+        text: "Tamam",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel"
+      },
+    ],
+    { cancelable: false }
+  );
   const [posts, setPosts] = useState([
     {
       imageLink:
